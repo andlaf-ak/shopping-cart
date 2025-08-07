@@ -11,13 +11,14 @@ from shopping_cart.pricing_model import PricingModel
 
 def test_plain_checkout():
     pricing_model = PricingModel({
-        "pack-of-6-eggs": Money(100, "GBP"),
+        "pack-of-6-eggs": Money(100, "USD"),
     })
     shopping_cart = ShoppingCart()
     shopping_cart.add_product(Product("pack-of-6-eggs"), 1)
     receipt = checkout(shopping_cart, Customer(age=30), pricing_model)
     assert len(receipt.items) == 1
     assert receipt.total == 1 * pricing_model.policy["pack-of-6-eggs"].amount
+    assert receipt.items[0] == "pack-of-6-eggs at $1.00 x 1 = $1.00"
 
 
 def test_complex_checkout():
