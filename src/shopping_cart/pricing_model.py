@@ -14,6 +14,7 @@ class PricingModel:
         adjusted_quantity = quantity
 
         total_price = MonetaryAmount(unit_price.amount * adjusted_quantity, unit_price.currency)
+        original_price = total_price
         if offer:
             if offer_name == "3x2":
                 adjusted_quantity = quantity // 3 * 2 + quantity % 3
@@ -36,5 +37,7 @@ class PricingModel:
             "original_quantity": quantity,
             "adjusted_quantity": adjusted_quantity,
             "total_price": total_price,
-            "offer_name": offer_name
+            "offer_name": offer_name,
+            "original_price": original_price,
+            "discount": original_price.minus(total_price) if offer else None
         }
