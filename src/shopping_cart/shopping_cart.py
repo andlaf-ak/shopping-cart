@@ -19,3 +19,9 @@ def checkout(shopping_cart, pricing_model):
             items.append(f"{product.name} at {price} x{quantity} = {cost}")
             total += cost
     return Receipt(items, total)
+
+def can_checkout(customer, shopping_cart):
+    for product, _ in shopping_cart.products.values():
+        if product.age_threshold and customer.age < product.age_threshold:
+            return False
+    return True
