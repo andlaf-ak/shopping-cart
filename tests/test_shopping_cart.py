@@ -149,7 +149,7 @@ def test_complex_shopping_cart_with_many_products_and_offers():
         750*3+pricing_model.policy["pack-of-sugar"].amount +
         pricing_model.policy["bottle-of-whisky"].amount
     )
-    assert receipt.items[0] == "pack-of-6-eggs at 100 x8 = 600 (offer 3x2 applied)"
-    assert receipt.items[1] == "bottle-of-milk at 200 x5 = 600 (offer buy-1-get-1-free applied)"
-    assert receipt.items[2] == "pack-of-sugar at 300 x10 = 2550 (offer 3-for-£7.5 applied)"
-    assert receipt.items[3] == "bottle-of-whisky at 500 x1 = 500"
+    assert receipt.items[0] == "pack-of-6-eggs at £1.00 x8 = £6.00 (offer 3x2 applied)"
+    assert receipt.items[1] == "bottle-of-milk at £2.00 x5 = £6.00 (offer buy-1-get-1-free applied)"
+    assert receipt.items[2] == "pack-of-sugar at £3.00 x10 = £25.50 (offer 3-for-£7.50 applied)"
+    assert receipt.items[3] == "bottle-of-whisky at £5.00 x1 = £5.00"

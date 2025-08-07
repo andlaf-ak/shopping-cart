@@ -1,3 +1,6 @@
+from shopping_cart.price import Price
+
+
 class PricingModel:
     def __init__(self, default_policy, product_offers=None):
         self.policy = default_policy
@@ -5,27 +8,27 @@ class PricingModel:
 
     def calculate_price(self, product, quantity):
 
-        unit_price = self.policy[product.name].amount
+        unit_price = self.policy[product.name]
         offer = self.product_offers.get(product.name)
         offer_name = "" if not offer else offer.name
         adjusted_quantity = quantity
 
-        total_price = unit_price * adjusted_quantity
+        total_price = Price(unit_price.amount * adjusted_quantity, unit_price.currency)
         if offer:
             if offer_name == "3x2":
                 adjusted_quantity = quantity // 3 * 2 + quantity % 3
-                total_price = unit_price * adjusted_quantity
+                total_price = Price(unit_price.amount * adjusted_quantity, unit_price.currency)
                 
             elif offer_name == "buy-1-get-1-free":
                 adjusted_quantity = (quantity + 1) // 2
-                total_price = unit_price * adjusted_quantity
+                total_price = Price(unit_price.amount * adjusted_quantity, unit_price.currency)
                 
             elif offer_name == "3-for-X":
-                offer_name = f"3-for-{offer.alternate_price.currency.symbol}{offer.alternate_price.amount / 100}"
+                offer_name = f"3-for-{offer.alternate_price}"
                 # For every group of 3, use alternate price, rest use unit price
                 num_groups = quantity // 3
                 remainder = quantity % 3
-                total_price = num_groups * offer.alternate_price.amount + remainder * unit_price
+                total_price = Price(num_groups * offer.alternate_price.amount + remainder * unit_price.amount, unit_price.currency)
 
         return {
             "product": product,
