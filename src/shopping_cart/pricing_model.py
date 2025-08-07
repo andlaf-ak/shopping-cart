@@ -4,21 +4,17 @@ class PricingModel:
         self.product_offers = product_offers or {}
 
     def calculate_price(self, product, quantity):
-        if product.name not in self.policy:
-            raise "Product {product.name} not found in pricing policy"
 
         unit_price = self.policy[product.name].amount
         offer = self.product_offers.get(product.name)
-        offer_name = ""
         adjusted_quantity = quantity
 
-        if offer == "3x2":
-            offer_name = "3x2"
-            adjusted_quantity = quantity // 3 * 2 + quantity % 3
-        
-        elif offer == "buy-1-get-1-free":
-            offer_name = "buy-1-get-1-free"
-            adjusted_quantity = (quantity + 1) // 2
+        if offer:
+            if offer.name == "3x2":
+                adjusted_quantity = quantity // 3 * 2 + quantity % 3
+            
+            elif offer.name == "buy-1-get-1-free":
+                adjusted_quantity = (quantity + 1) // 2
 
         total_price = unit_price * adjusted_quantity
 
@@ -28,5 +24,5 @@ class PricingModel:
             "original_quantity": quantity,
             "adjusted_quantity": adjusted_quantity,
             "total_price": total_price,
-            "offer_name": offer_name
+            "offer_name": "" if not offer else offer.name
         }

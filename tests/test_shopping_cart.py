@@ -4,6 +4,7 @@ import pytest
 from shopping_cart.customer import Customer
 from shopping_cart.price import Price
 from shopping_cart.product import Product
+from shopping_cart.product_offer import ProductOffer
 from shopping_cart.shopping_cart import ShoppingCart, can_checkout, checkout
 from shopping_cart.pricing_model import PricingModel
 
@@ -45,7 +46,7 @@ def test_underage_customer_cannot_buy_certain_products():
 
 def test_basic_three_for_two_offer():
     product_offers = {
-       "pack-of-6-eggs": "3x2",
+       "pack-of-6-eggs": ProductOffer("3x2"),
     }
     pricing_model = PricingModel({
         "pack-of-6-eggs": Price(50, "GBP"),
@@ -58,7 +59,7 @@ def test_basic_three_for_two_offer():
 
 def test_complex_three_for_two_offer():
     product_offers = {
-       "pack-of-6-eggs": "3x2",
+       "pack-of-6-eggs": ProductOffer("3x2"),
     }
     pricing_model = PricingModel({
         "pack-of-6-eggs": Price(50, "GBP"),
@@ -71,7 +72,7 @@ def test_complex_three_for_two_offer():
 
 def test_basic_buy_one_get_one_free_offer():
     product_offers = {
-       "pack-of-6-eggs": "buy-1-get-1-free",
+       "pack-of-6-eggs": ProductOffer("buy-1-get-1-free"),
     }
     pricing_model = PricingModel({
         "pack-of-6-eggs": Price(50, "GBP"),
@@ -84,7 +85,7 @@ def test_basic_buy_one_get_one_free_offer():
 
 def test_complex_buy_one_get_one_free_offer():
     product_offers = {
-       "pack-of-6-eggs": "buy-1-get-1-free",
+       "pack-of-6-eggs": ProductOffer("buy-1-get-1-free"),
     }
     pricing_model = PricingModel({
         "pack-of-6-eggs": Price(50, "GBP"),
