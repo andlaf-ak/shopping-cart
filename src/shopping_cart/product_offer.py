@@ -1,14 +1,14 @@
 from shopping_cart.money import Money
 from typing import Optional, Dict, Any
+from dataclasses import dataclass, field
 
+@dataclass(frozen=True)
 class ProductOffer:
+    name: str = field()
+    alternate_price: Optional[Money] = field(default=None)
     OFFER_3X2 = "3x2"
     OFFER_B1G1F = "buy-1-get-1-free"
     OFFER_3_FOR_X = "3-for-X"
-
-    def __init__(self, name: str, alternate_price: Optional[Money] = None) -> None:
-        self.name: str = name
-        self.alternate_price: Optional[Money] = alternate_price
 
     def apply(self, unit_price: Money, quantity: int) -> Dict[str, Any]:
         if not isinstance(unit_price, Money):
