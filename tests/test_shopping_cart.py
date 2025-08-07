@@ -42,11 +42,8 @@ def test_underage_customer_cannot_buy_certain_products():
     shopping_cart.add_product(Product("bottle-of-milk"), 6)
     shopping_cart.add_product(Product("pack-of-sugar"), 3)
     shopping_cart.add_product(Product("bottle-of-whisky", 18), 1)
-    try:
+    with pytest.raises(UnderageCustomerError):
         shopping_cart.checkout(Customer(age=17), PricingModel({}))
-        assert False, "Expected UnderageCustomerError"
-    except UnderageCustomerError:
-        pass
 
 def test_basic_three_for_two_offer():
     product_offers = {
