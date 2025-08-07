@@ -24,16 +24,20 @@ def checkout(shopping_cart, customer, pricing_model):
         price_info = pricing_model.calculate_price(product, quantity)
 
         unit_price = price_info['unit_price']
-        original_price = price_info['original_price']
         total_price = price_info['total_price']
-        discount = price_info['discount']
+        original_price = price_info.get('original_price', total_price)
+        discount = price_info.get('discount', None)
+        offer_name = price_info.get('offer_name', "")
 
-        discount_text = f" - {str(discount)} (offer {price_info['offer_name']} applied)" if discount else ""
         
         item_prefix = f"{product.name} at {str(unit_price)} x {price_info['original_quantity']} = " 
 
-        if discount:
-            line = f"{item_prefix}{original_price} - {discount} (offer {price_info['offer_name']} applied) = {str(total_price)}"
+        if offer_name:
+            line = f"{item_prefix}{str(original_price)}"
+            if discount and discount.amount > 0:
+                line += f" - {str(discount)} (offer {offer_name} applied) = {str(total_price)}"
+            else:
+                line += f" (offer {offer_name} applied) = {str(total_price)}"
         else:
             line = f"{item_prefix}{str(total_price)}"
 
