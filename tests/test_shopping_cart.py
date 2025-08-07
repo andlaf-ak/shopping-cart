@@ -96,7 +96,7 @@ def test_complex_buy_one_get_one_free_offer():
     assert len(receipt.items) == 1
     assert receipt.total == 3 * pricing_model.policy["pack-of-6-eggs"].amount
 
-def test_basic_X_for_X_offer():
+def test_basic_3_for_X_policy():
     product_offers = {
        "pack-of-6-eggs": ProductOffer("3-for-X", Price(250, "GBP")),
     }
@@ -108,5 +108,19 @@ def test_basic_X_for_X_offer():
     receipt = checkout(shopping_cart, pricing_model)
     assert len(receipt.items) == 1
     assert receipt.total == 250 
+
+def test_complex_3_for_X_offer():
+    product_offers = {
+       "pack-of-6-eggs": ProductOffer("3-for-X", Price(250, "GBP")),
+    }
+    pricing_model = PricingModel({
+        "pack-of-6-eggs": Price(100, "GBP"),
+    }, product_offers)
+    shopping_cart = ShoppingCart()
+    shopping_cart.add_product(Product("pack-of-6-eggs"), 8)
+    receipt = checkout(shopping_cart, pricing_model)
+    assert len(receipt.items) == 1
+    assert receipt.total == 250 * 2 + 100 * 2  # 2 groups of 3 at alternate price, plus 2 at unit price
+
 
 
