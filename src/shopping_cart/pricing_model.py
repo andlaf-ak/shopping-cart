@@ -33,7 +33,7 @@ class PricingModel:
                 **offer_result
             }
         else:
-            total_price = Money(unit_price.amount * quantity, unit_price.currency)
+            total_price = Money(unit_price.amount * quantity, unit_price.currency.code)
             return {
                 "product": product,
                 "unit_price": unit_price,

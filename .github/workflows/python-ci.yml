@@ -15,4 +15,4 @@ jobs:
       - name: Install dependencies
         run: poetry install
       - name: Run tests
-        run: poetry run pytest
+        run: poetry run pytest --cov=src/shopping_cart --cov-report=term-missing

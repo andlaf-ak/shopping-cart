@@ -19,21 +19,21 @@ class ProductOffer:
         :param quantity: int, number of items
         :return: dict with adjusted quantity, total price, offer name, original price, and discount
         """
-        original_price = Money(unit_price.amount * quantity, unit_price.currency)
+        original_price = Money(unit_price.amount * quantity, unit_price.currency.code)
         adjusted_quantity = quantity
         total_price = original_price
         offer_name = self.name
         if self.name == "3x2":
             adjusted_quantity = quantity // 3 * 2 + quantity % 3
-            total_price = Money(unit_price.amount * adjusted_quantity, unit_price.currency)
+            total_price = Money(unit_price.amount * adjusted_quantity, unit_price.currency.code)
         elif self.name == "buy-1-get-1-free":
             adjusted_quantity = (quantity + 1) // 2
-            total_price = Money(unit_price.amount * adjusted_quantity, unit_price.currency)
+            total_price = Money(unit_price.amount * adjusted_quantity, unit_price.currency.code)
         elif self.name == "3-for-X" and self.alternate_price:
             offer_name = f"3-for-{self.alternate_price}"
             num_groups = quantity // 3
             remainder = quantity % 3
-            total_price = Money(num_groups * self.alternate_price.amount + remainder * unit_price.amount, unit_price.currency)
+            total_price = Money(num_groups * self.alternate_price.amount + remainder * unit_price.amount, unit_price.currency.code)
         discount = original_price.minus(total_price)
         return {
             "adjusted_quantity": adjusted_quantity,
