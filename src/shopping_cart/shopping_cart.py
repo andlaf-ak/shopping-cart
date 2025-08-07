@@ -15,8 +15,14 @@ def checkout(shopping_cart, pricing_model):
     for product, quantity in shopping_cart.products.values():
         if product.name in pricing_model.policy:
             price = pricing_model.policy[product.name].amount
+            offer_applied = pricing_model.product_offers and product.name in pricing_model.product_offers
+            offer_name = ""
+            if offer_applied and pricing_model.product_offers[product.name] == "3x2": 
+                offer_name = "3x2"
+                if pricing_model.product_offers.get(product.name) == "3x2":
+                    quantity = quantity // 3 * 2 + quantity % 3
             cost = price * quantity
-            items.append(f"{product.name} at {price} x{quantity} = {cost}")
+            items.append(f"{product.name} at {price} x{quantity} = {cost}" + f" (offer {offer_name} applied)" if offer_applied else "")
             total += cost
     return Receipt(items, total)
 
