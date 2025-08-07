@@ -1,4 +1,4 @@
-from shopping_cart.price import MonetaryAmount
+from shopping_cart.monetary_amount import MonetaryAmount
 
 
 class PricingModel:

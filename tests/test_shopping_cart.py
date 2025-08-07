@@ -2,7 +2,7 @@ import pytest
 
 
 from shopping_cart.customer import Customer
-from shopping_cart.price import MonetaryAmount
+from shopping_cart.monetary_amount import MonetaryAmount
 from shopping_cart.product import Product
 from shopping_cart.product_offer import ProductOffer
 from shopping_cart.shopping_cart import ShoppingCart, can_checkout, checkout
