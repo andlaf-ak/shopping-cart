@@ -21,7 +21,7 @@ class PricingModel:
                 total_price = unit_price * adjusted_quantity
                 
             elif offer_name == "3-for-X":
-                offer_name = f"3-for-{offer.alternate_price.amount // 100}"
+                offer_name = f"3-for-{offer.alternate_price.currency.symbol}{offer.alternate_price.amount / 100}"
                 # For every group of 3, use alternate price, rest use unit price
                 num_groups = quantity // 3
                 remainder = quantity % 3

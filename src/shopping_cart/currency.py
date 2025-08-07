@@ -1,6 +1,9 @@
+SYMBOLS = {"GBP": '£', "USD": '$'}
+
 class Currency:
     def __init__(self, code):
         self.code = code
+        self.symbol = SYMBOLS.get(code, code)
 
     def __eq__(self, other):
         if isinstance(other, Currency):
