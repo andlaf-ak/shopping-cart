@@ -14,8 +14,6 @@ def checkout(shopping_cart, pricing_model):
     total = 0
     for product, quantity in shopping_cart.products.values():
         price_info = pricing_model.calculate_price(product, quantity)
-        if not price_info:
-            continue  # or raise?
 
         line = f"{product.name} at {price_info['unit_price']} x{price_info['adjusted_quantity']} = {price_info['total_price']}"
         if price_info['offer_name']:
