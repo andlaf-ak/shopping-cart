@@ -1,4 +1,4 @@
-from shopping_cart.price import Price
+from shopping_cart.price import MonetaryAmount
 
 
 class PricingModel:
@@ -13,22 +13,22 @@ class PricingModel:
         offer_name = "" if not offer else offer.name
         adjusted_quantity = quantity
 
-        total_price = Price(unit_price.amount * adjusted_quantity, unit_price.currency)
+        total_price = MonetaryAmount(unit_price.amount * adjusted_quantity, unit_price.currency)
         if offer:
             if offer_name == "3x2":
                 adjusted_quantity = quantity // 3 * 2 + quantity % 3
-                total_price = Price(unit_price.amount * adjusted_quantity, unit_price.currency)
+                total_price = MonetaryAmount(unit_price.amount * adjusted_quantity, unit_price.currency)
                 
             elif offer_name == "buy-1-get-1-free":
                 adjusted_quantity = (quantity + 1) // 2
-                total_price = Price(unit_price.amount * adjusted_quantity, unit_price.currency)
+                total_price = MonetaryAmount(unit_price.amount * adjusted_quantity, unit_price.currency)
                 
             elif offer_name == "3-for-X":
                 offer_name = f"3-for-{offer.alternate_price}"
                 # For every group of 3, use alternate price, rest use unit price
                 num_groups = quantity // 3
                 remainder = quantity % 3
-                total_price = Price(num_groups * offer.alternate_price.amount + remainder * unit_price.amount, unit_price.currency)
+                total_price = MonetaryAmount(num_groups * offer.alternate_price.amount + remainder * unit_price.amount, unit_price.currency)
 
         return {
             "product": product,
