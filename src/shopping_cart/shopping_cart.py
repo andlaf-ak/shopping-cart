@@ -13,18 +13,18 @@ def checkout(shopping_cart, pricing_model):
     items = []
     total = 0
     for product, quantity in shopping_cart.products.values():
-        if product.name in pricing_model.policy:
-            price = pricing_model.policy[product.name].amount
-            offer_applied = pricing_model.product_offers and product.name in pricing_model.product_offers
-            offer_name = ""
-            if offer_applied and pricing_model.product_offers[product.name] == "3x2": 
-                offer_name = "3x2"
-                if pricing_model.product_offers.get(product.name) == "3x2":
-                    quantity = quantity // 3 * 2 + quantity % 3
-            cost = price * quantity
-            items.append(f"{product.name} at {price} x{quantity} = {cost}" + f" (offer {offer_name} applied)" if offer_applied else "")
-            total += cost
+        price_info = pricing_model.calculate_price(product, quantity)
+        if not price_info:
+            continue  # or raise?
+
+        line = f"{product.name} at {price_info['unit_price']} x{price_info['adjusted_quantity']} = {price_info['total_price']}"
+        if price_info['offer_name']:
+            line += f" (offer {price_info['offer_name']} applied)"
+
+        items.append(line)
+        total += price_info['total_price']
     return Receipt(items, total)
+
 
 def can_checkout(customer, shopping_cart):
     for product, _ in shopping_cart.products.values():
