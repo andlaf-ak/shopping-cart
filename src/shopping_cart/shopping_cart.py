@@ -5,11 +5,17 @@ from shopping_cart.receipt import Receipt
 class UnderageCustomerError(Exception):
     pass
 
-class ShoppingCart:
-    def __init__(self):
-        self.products = {}
+from typing import Dict, Any
 
-    def add_product(self, product, quantity=1):
+class ShoppingCart:
+    def __init__(self) -> None:
+        self.products: Dict[str, Any] = {}
+
+    def add_product(self, product: Any, quantity: int = 1) -> None:
+        if not hasattr(product, "name"):
+            raise TypeError("product must have a 'name' attribute")
+        if not isinstance(quantity, int) or quantity < 0:
+            raise ValueError("quantity must be a non-negative integer")
         self.products[product.name] = (product, quantity)
 
 def checkout(shopping_cart, customer, pricing_model):

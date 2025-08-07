@@ -1,25 +1,15 @@
 from shopping_cart.monetary_amount import Money
-
+from shopping_cart.product_offer import ProductOffer
+from typing import Dict, Optional, Any
 
 class PricingModel:
-    """
-    Handles product pricing and offer application for a shopping cart.
-    """
-    def __init__(self, default_policy, product_offers=None):
-        """
-        :param default_policy: dict mapping product names to Money objects
-        :param product_offers: dict mapping product names to ProductOffer objects
-        """
-        self.policy = default_policy
-        self.product_offers = product_offers or {}
+    def __init__(self, default_policy: Dict[str, Money], product_offers: Optional[Dict[str, ProductOffer]] = None) -> None:
+        self.policy: Dict[str, Money] = default_policy
+        self.product_offers: Dict[str, ProductOffer] = product_offers or {}
 
-    def calculate_price(self, product, quantity: int):
-        """
-        Calculate the price for a product and quantity, applying any offers.
-        :param product: Product object
-        :param quantity: int, number of items
-        :return: dict with pricing details
-        """
+    def calculate_price(self, product: Any, quantity: int) -> Dict[str, Any]:
+        if not hasattr(product, "name"):
+            raise TypeError("product must have a 'name' attribute")
         if not isinstance(quantity, int) or quantity < 0:
             raise ValueError("Quantity must be a non-negative integer")
         unit_price = self.policy[product.name]
@@ -42,5 +32,5 @@ class PricingModel:
                 "total_price": total_price,
                 "offer_name": "",
                 "original_price": total_price,
-                "discount": None
+                "discount": Money(0, unit_price.currency.code)
             }

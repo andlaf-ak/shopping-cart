@@ -1,4 +1,6 @@
+from typing import Any, List
+
 class Receipt:
-    def __init__(self, items, total):
-        self.items = items
-        self.total = total
+    def __init__(self, items: List[Any], total: Any) -> None:
+        self.items: List[Any] = items
+        self.total: Any = total
