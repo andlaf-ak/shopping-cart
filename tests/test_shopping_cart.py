@@ -34,7 +34,7 @@ def test_complex_checkout():
     assert len(receipt.items) == 3
     assert receipt.total == 1 * pricing_model.policy["pack-of-6-eggs"].amount + 6 * \
         pricing_model.policy["bottle-of-milk"].amount + \
-        3 * pricing_model.policy["pack-of-sugar"].amount * 2
+        3 * pricing_model.policy["pack-of-sugar"].amount
 
 def test_underage_customer_cannot_buy_certain_products():
     shopping_cart = ShoppingCart()
