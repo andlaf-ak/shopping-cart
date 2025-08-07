@@ -1,6 +1,7 @@
+from dataclasses import dataclass, field
 from typing import Any, List
 
+@dataclass(frozen=True)
 class Receipt:
-    def __init__(self, items: List[Any], total: Any) -> None:
-        self.items: List[Any] = items
-        self.total: Any = total
+    items: List[Any] = field()
+    total: Any = field()
