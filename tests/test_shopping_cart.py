@@ -122,5 +122,30 @@ def test_complex_3_for_X_offer():
     assert len(receipt.items) == 1
     assert receipt.total == 250 * 2 + 100 * 2  # 2 groups of 3 at alternate price, plus 2 at unit price
 
-
-
+def test_complex_shopping_cart_with_many_products_and_offers():
+    product_offers = {
+       "pack-of-6-eggs": ProductOffer("3x2"),
+       "bottle-of-milk": ProductOffer("buy-1-get-1-free"),
+       "pack-of-sugar": ProductOffer("3-for-X", Price(750, "GBP")),
+    }
+    pricing_model = PricingModel({
+        "pack-of-6-eggs": Price(100, "GBP"),
+        "bottle-of-milk": Price(200, "GBP"),
+        "pack-of-sugar": Price(300, "GBP"),
+        "bottle-of-whisky": Price(500, "GBP"),
+    }, product_offers)
+    
+    shopping_cart = ShoppingCart()
+    shopping_cart.add_product(Product("pack-of-6-eggs"), 8)
+    shopping_cart.add_product(Product("bottle-of-milk"), 5)
+    shopping_cart.add_product(Product("pack-of-sugar"), 10)
+    shopping_cart.add_product(Product("bottle-of-whisky"), 1)
+    
+    receipt = checkout(shopping_cart, pricing_model)
+    assert len(receipt.items) == 4
+    assert receipt.total == (
+        6 * pricing_model.policy["pack-of-6-eggs"].amount + 
+        3 * pricing_model.policy["bottle-of-milk"].amount +
+        750*3+pricing_model.policy["pack-of-sugar"].amount +
+        pricing_model.policy["bottle-of-whisky"].amount
+    )
