@@ -55,3 +55,16 @@ def test_basic_three_for_two_offer():
     receipt = checkout(shopping_cart, pricing_model)
     assert len(receipt.items) == 1
     assert receipt.total == 2 * pricing_model.policy["pack-of-6-eggs"].amount
+
+def test_complex_three_for_two_offer():
+    product_offers = {
+       "pack-of-6-eggs": "3x2",
+    }
+    pricing_model = PricingModel({
+        "pack-of-6-eggs": Price(50, "GBP"),
+    }, product_offers)
+    shopping_cart = ShoppingCart()
+    shopping_cart.add_product(Product("pack-of-6-eggs"), 8)
+    receipt = checkout(shopping_cart, pricing_model)
+    assert len(receipt.items) == 1
+    assert receipt.total == 6 * pricing_model.policy["pack-of-6-eggs"].amount
