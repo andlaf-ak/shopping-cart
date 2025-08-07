@@ -2,7 +2,7 @@ import pytest
 
 
 from shopping_cart.customer import Customer
-from shopping_cart.monetary_amount import MonetaryAmount
+from shopping_cart.monetary_amount import Money
 from shopping_cart.product import Product
 from shopping_cart.product_offer import ProductOffer
 from shopping_cart.shopping_cart import ShoppingCart, UnderageCustomerError, checkout
@@ -11,7 +11,7 @@ from shopping_cart.pricing_model import PricingModel
 
 def test_plain_checkout():
     pricing_model = PricingModel({
-        "pack-of-6-eggs": MonetaryAmount(100, "GBP"),
+        "pack-of-6-eggs": Money(100, "GBP"),
     })
     shopping_cart = ShoppingCart()
     shopping_cart.add_product(Product("pack-of-6-eggs"), 1)
@@ -22,9 +22,9 @@ def test_plain_checkout():
 
 def test_complex_checkout():
     pricing_model = PricingModel({
-        "pack-of-6-eggs": MonetaryAmount(50, "GBP"),
-        "bottle-of-milk": MonetaryAmount(111, "GBP"),
-        "pack-of-sugar": MonetaryAmount(125, "GBP"),
+        "pack-of-6-eggs": Money(50, "GBP"),
+        "bottle-of-milk": Money(111, "GBP"),
+        "pack-of-sugar": Money(125, "GBP"),
     })
     shopping_cart = ShoppingCart()
     shopping_cart.add_product(Product("pack-of-6-eggs"), 1)
@@ -47,10 +47,10 @@ def test_underage_customer_cannot_buy_certain_products():
 
 def test_basic_three_for_two_offer():
     product_offers = {
-       "pack-of-6-eggs": ProductOffer("3x2", MonetaryAmount(50, "GBP")),
+       "pack-of-6-eggs": ProductOffer("3x2", Money(50, "GBP")),
     }
     pricing_model = PricingModel({
-        "pack-of-6-eggs": MonetaryAmount(50, "GBP"),
+        "pack-of-6-eggs": Money(50, "GBP"),
     }, product_offers)
     shopping_cart = ShoppingCart()
     shopping_cart.add_product(Product("pack-of-6-eggs"), 3)
@@ -60,10 +60,10 @@ def test_basic_three_for_two_offer():
 
 def test_complex_three_for_two_offer():
     product_offers = {
-       "pack-of-6-eggs": ProductOffer("3x2", MonetaryAmount(50, "GBP")),
+       "pack-of-6-eggs": ProductOffer("3x2", Money(50, "GBP")),
     }
     pricing_model = PricingModel({
-        "pack-of-6-eggs": MonetaryAmount(50, "GBP"),
+        "pack-of-6-eggs": Money(50, "GBP"),
     }, product_offers)
     shopping_cart = ShoppingCart()
     shopping_cart.add_product(Product("pack-of-6-eggs"), 8)
@@ -73,10 +73,10 @@ def test_complex_three_for_two_offer():
 
 def test_basic_buy_one_get_one_free_offer():
     product_offers = {
-       "pack-of-6-eggs": ProductOffer("buy-1-get-1-free", MonetaryAmount(50, "GBP")),
+       "pack-of-6-eggs": ProductOffer("buy-1-get-1-free", Money(50, "GBP")),
     }
     pricing_model = PricingModel({
-        "pack-of-6-eggs": MonetaryAmount(50, "GBP"),
+        "pack-of-6-eggs": Money(50, "GBP"),
     }, product_offers)
     shopping_cart = ShoppingCart()
     shopping_cart.add_product(Product("pack-of-6-eggs"), 2)
@@ -86,10 +86,10 @@ def test_basic_buy_one_get_one_free_offer():
 
 def test_complex_buy_one_get_one_free_offer():
     product_offers = {
-       "pack-of-6-eggs": ProductOffer("buy-1-get-1-free", MonetaryAmount(50, "GBP")),
+       "pack-of-6-eggs": ProductOffer("buy-1-get-1-free", Money(50, "GBP")),
     }
     pricing_model = PricingModel({
-        "pack-of-6-eggs": MonetaryAmount(50, "GBP"),
+        "pack-of-6-eggs": Money(50, "GBP"),
     }, product_offers)
     shopping_cart = ShoppingCart()
     shopping_cart.add_product(Product("pack-of-6-eggs"), 5)
@@ -99,10 +99,10 @@ def test_complex_buy_one_get_one_free_offer():
 
 def test_basic_3_for_X_policy():
     product_offers = {
-       "pack-of-6-eggs": ProductOffer("3-for-X", MonetaryAmount(250, "GBP")),
+       "pack-of-6-eggs": ProductOffer("3-for-X", Money(250, "GBP")),
     }
     pricing_model = PricingModel({
-        "pack-of-6-eggs": MonetaryAmount(100, "GBP"),
+        "pack-of-6-eggs": Money(100, "GBP"),
     }, product_offers)
     shopping_cart = ShoppingCart()
     shopping_cart.add_product(Product("pack-of-6-eggs"), 3)
@@ -112,10 +112,10 @@ def test_basic_3_for_X_policy():
 
 def test_complex_3_for_X_offer():
     product_offers = {
-       "pack-of-6-eggs": ProductOffer("3-for-X", MonetaryAmount(250, "GBP")),
+       "pack-of-6-eggs": ProductOffer("3-for-X", Money(250, "GBP")),
     }
     pricing_model = PricingModel({
-        "pack-of-6-eggs": MonetaryAmount(100, "GBP"),
+        "pack-of-6-eggs": Money(100, "GBP"),
     }, product_offers)
     shopping_cart = ShoppingCart()
     shopping_cart.add_product(Product("pack-of-6-eggs"), 8)
@@ -125,15 +125,15 @@ def test_complex_3_for_X_offer():
 
 def test_complex_shopping_cart_with_many_products_and_offers():
     product_offers = {
-       "pack-of-6-eggs": ProductOffer("3x2", MonetaryAmount(50, "GBP")),
-       "bottle-of-milk": ProductOffer("buy-1-get-1-free", MonetaryAmount(200, "GBP")),
-       "pack-of-sugar": ProductOffer("3-for-X", MonetaryAmount(750, "GBP")),
+       "pack-of-6-eggs": ProductOffer("3x2", Money(50, "GBP")),
+       "bottle-of-milk": ProductOffer("buy-1-get-1-free", Money(200, "GBP")),
+       "pack-of-sugar": ProductOffer("3-for-X", Money(750, "GBP")),
     }
     pricing_model = PricingModel({
-        "pack-of-6-eggs": MonetaryAmount(100, "GBP"),
-        "bottle-of-milk": MonetaryAmount(200, "GBP"),
-        "pack-of-sugar": MonetaryAmount(300, "GBP"),
-        "bottle-of-whisky": MonetaryAmount(500, "GBP"),
+        "pack-of-6-eggs": Money(100, "GBP"),
+        "bottle-of-milk": Money(200, "GBP"),
+        "pack-of-sugar": Money(300, "GBP"),
+        "bottle-of-whisky": Money(500, "GBP"),
     }, product_offers)
     
     shopping_cart = ShoppingCart()
