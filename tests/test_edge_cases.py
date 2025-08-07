@@ -1,5 +1,5 @@
 import pytest
-from shopping_cart.monetary_amount import Money
+from shopping_cart.money import Money
 from shopping_cart.product import Product
 from shopping_cart.pricing_model import PricingModel
 

@@ -1,4 +1,4 @@
-from shopping_cart.monetary_amount import Money
+from shopping_cart.money import Money
 from shopping_cart.product_offer import ProductOffer
 from typing import Dict, Optional, Any
 
