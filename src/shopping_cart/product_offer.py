@@ -1,12 +1,24 @@
 from shopping_cart.monetary_amount import Money
 
 class ProductOffer:
+    """
+    Represents a special offer for a product (e.g., 3x2, buy-1-get-1-free, 3-for-X).
+    """
     def __init__(self, name: str, alternate_price: 'Money' = None) -> None:
+        """
+        :param name: str, offer type
+        :param alternate_price: Money, alternate price for some offers
+        """
         self.name = name
         self.alternate_price = alternate_price
 
     def apply(self, unit_price: 'Money', quantity: int) -> dict:
-        """Return adjusted quantity, total price, and discount for this offer."""
+        """
+        Apply the offer to a product and quantity.
+        :param unit_price: Money, price per item
+        :param quantity: int, number of items
+        :return: dict with adjusted quantity, total price, offer name, original price, and discount
+        """
         original_price = Money(unit_price.amount * quantity, unit_price.currency)
         adjusted_quantity = quantity
         total_price = original_price
