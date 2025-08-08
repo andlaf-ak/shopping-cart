@@ -2,8 +2,13 @@ from shopping_cart.money import Money
 from shopping_cart.product_offer import ProductOffer
 from typing import Dict, Optional, Any
 
+
 class PricingModel:
-    def __init__(self, default_policy: Dict[str, Money], product_offers: Optional[Dict[str, ProductOffer]] = None) -> None:
+    def __init__(
+        self,
+        default_policy: Dict[str, Money],
+        product_offers: Optional[Dict[str, ProductOffer]] = None,
+    ) -> None:
         self.policy: Dict[str, Money] = default_policy
         self.product_offers: Dict[str, ProductOffer] = product_offers or {}
 
@@ -20,7 +25,7 @@ class PricingModel:
                 "product": product,
                 "unit_price": unit_price,
                 "original_quantity": quantity,
-                **offer_result
+                **offer_result,
             }
         else:
             total_price = Money(unit_price.amount * quantity, unit_price.currency.code)
@@ -32,5 +37,5 @@ class PricingModel:
                 "total_price": total_price,
                 "offer_name": "",
                 "original_price": total_price,
-                "discount": Money(0, unit_price.currency.code)
+                "discount": Money(0, unit_price.currency.code),
             }
