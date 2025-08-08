@@ -2,13 +2,10 @@ from shopping_cart.currency import Currency
 
 
 from shopping_cart.currency import Currency
-from dataclasses import dataclass, field
+from shopping_cart.currency import Currency
 from typing import Any
 
-@dataclass(frozen=True)
 class Money:
-    amount: int
-    currency: Currency
     SUPPORTED_CURRENCIES = {"USD", "GBP"}
 
     def __init__(self, amount: int, currency: str) -> None:
@@ -19,8 +16,8 @@ class Money:
         currency_upper = currency.upper()
         if currency_upper not in self.SUPPORTED_CURRENCIES:
             raise ValueError(f"Unsupported currency: {currency_upper}. Supported currencies are: {', '.join(self.SUPPORTED_CURRENCIES)}.")
-        object.__setattr__(self, "amount", amount)
-        object.__setattr__(self, "currency", Currency(currency_upper))
+        self.amount = amount
+        self.currency = Currency(currency_upper)
 
     def __str__(self) -> str:
         return f"{str(self.currency)}{self.amount / 100:.2f}"
